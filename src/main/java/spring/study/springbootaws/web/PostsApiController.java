@@ -1,0 +1,21 @@
+package spring.study.springbootaws.web;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import spring.study.springbootaws.service.posts.PostsService;
+import spring.study.springbootaws.web.dto.PostsSaveRequestDTO;
+
+@RequiredArgsConstructor
+@RestController
+public class PostsApiController {
+
+    private final PostsService postsService;
+
+    @PostMapping("/api/v1/posts")
+    public Long save(@RequestBody PostsSaveRequestDTO requestDTO) {
+        return postsService.save(requestDTO);
+    }
+
+}

@@ -2,13 +2,16 @@ package spring.study.springbootaws.service.posts;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.study.springbootaws.domain.posts.Posts;
 import spring.study.springbootaws.domain.posts.PostsRepository;
+import spring.study.springbootaws.web.dto.PostsListResponseDTO;
 import spring.study.springbootaws.web.dto.PostsResponseDTO;
 import spring.study.springbootaws.web.dto.PostsSaveRequestDTO;
 import spring.study.springbootaws.web.dto.PostsUpdateRequestDTO;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,4 +41,13 @@ public class PostsService {
 
         return new PostsResponseDTO(entity);
     }
+
+    //랜잭션 범위는 유지하되, 조회 기능만 남겨두어 조회 속도가 개선
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDTO> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDTO::new)     //.map(posts -> new PostsListResponseDto(posts))와 같음
+                .collect(Collectors.toList());
+    }
+
 }
